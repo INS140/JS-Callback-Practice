@@ -27,6 +27,8 @@ function move(element) {
             if (direction === 'south') {if (y > 102) {y--}}
             updateCoor(x, y)
             updateCharacterZIndex()
+            updateCharacterHitBox(character, x, y)
+            pickUpItem()
         }
         
         setInterval(moveCharacter, 1)

@@ -1,31 +1,20 @@
-let objectArray = [] //used for character z index positioning
-
-const createTreeLine = () => {
-    for (let i = 0; i*50 < window.innerWidth; i++) {
-        let tree = newImage('assets/pine-tree.png')
-        tree.style.zIndex = '0'
-        move(tree).to((i*50)-50, (window.innerHeight-(window.innerHeight*16/100)))
-        objectArray.pop()
-    }
-}
-
-createTreeLine()
+let imageArray = [] //used for character z index positioning
 
 const updateCharacterDirection = (direction) => {
     if (direction === null) {
-        character.src = 'assets/green-character/static.gif'
+        character.image.src = 'assets/green-character/static.gif'
     }
     if (direction === 'west') {
-        character.src = 'assets/green-character/west.gif'
+        character.image.src = 'assets/green-character/west.gif'
     }
     if (direction === 'north') {
-        character.src = 'assets/green-character/north.gif'
+        character.image.src = 'assets/green-character/north.gif'
     }
     if (direction === 'east') {
-        character.src = 'assets/green-character/east.gif'
+        character.image.src = 'assets/green-character/east.gif'
     }
     if (direction === 'south') {
-        character.src = 'assets/green-character/south.gif'
+        character.image.src = 'assets/green-character/south.gif'
     }
 }
 
@@ -34,33 +23,57 @@ createBackground('assets/grass.png', '86vh')
 const inventory = newInventory()
 move(inventory).to(0, 0)
 
-const character = newImage('assets/green-character/static.gif')
-objectArray.pop()
+createTreeLine()
+window.addEventListener('resize', () => {
+    removeTreeLine()
+    createTreeLine()
+})
 
-move(character).withArrowKeys(100, 250, updateCharacterDirection)
+const character = newObject('assets/green-character/static.gif', 100, 250, 50, 75, 'image')
 
 move(newImage('assets/tree.png')).to(200, 450)
 move(newImage('assets/pillar.png')).to(350, 250)
 move(newImage('assets/pine-tree.png')).to(450, 350)
 move(newImage('assets/crate.png')).to(150, 350)
 move(newImage('assets/well.png')).to(500, 575)
-move(newItem('assets/sword.png')).to(500, 555)
-move(newItem('assets/shield.png')).to(165, 335)
-move(newItem('assets/staff.png')).to(600, 250)
+let sword = newObject('assets/sword.png', 500, 555, 50, 54, 'item')
+let shield = newObject('assets/shield.png', 165, 335, 64, 64, 'item')
+let staff = newObject('assets/staff.png', 600, 250, 64, 64, 'item')
 
 const updateCharacterZIndex = () => { // Sets the characters z index based off of objects around
-    let charBtm = Number(character.style.bottom.replace(/px/g, ''))
-    let charLeft = Number(character.style.left.replace(/px/g, ''))
+    let charBtm = Number(character.image.style.bottom.replace(/px/g, ''))
+    let charLeft = Number(character.image.style.left.replace(/px/g, ''))
 
-    let objects = objectArray.filter(element => {
+    let objects = imageArray.filter(element => {
         let btm = Number(element.style.bottom.replace(/px/g, ''))
         let left = Number(element.style.left.replace(/px/g, ''))
-        return ((btm-100 < charBtm && charBtm <= btm) && (left-50 < charLeft && charLeft <= left+150))
+        return ((btm-75 < charBtm && charBtm <= btm) && (left-50 < charLeft && charLeft <= left+150))
     })
 
     if (objects.length !== 0) {
-        character.style.zIndex = '2'
+        character.image.style.zIndex = '3'
     } else if (objects.length === 0) {
-        character.style.zIndex = '1'
+        character.image.style.zIndex = '2'
     }
+}
+
+const pickUpItem = () => {
+    let currentObject = objectArray.filter(object => {
+        if ((character.hitBoxX[0] >= object.hitBoxX[0]) && (character.hitBoxX[1] <= object.hitBoxX[1])) {
+            if ((character.hitBoxY[0] >= object.hitBoxY[0]) && (character.hitBoxY[1] <= object.hitBoxY[1])) {
+                return true
+            }
+        }
+        return false
+    })
+
+    if (currentObject.length !== 0) {
+        currentObject[0].image.remove()
+        currentObject[0].hitBoxX = [0, 0]
+        currentObject[0].hitBoxY = [0, 0]
+        let inventoryItem = document.createElement('img')
+        inventoryItem.src = currentObject[0].image.src;
+        inventory.append(inventoryItem)
+    }
+    
 }
