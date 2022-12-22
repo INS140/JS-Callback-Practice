@@ -16,17 +16,21 @@ const newObject = (url, left, bottom, width, height, itemOrImage) => {
     if (url === 'assets/green-character/static.gif') {
         move(object.image).withArrowKeys(left, bottom, updateCharacterDirection)
         imageArray.pop()
-        updateCharacterHitBox(object, left, bottom)
+        updateCharacterBoxes(object, left, bottom)
     } else {
         move(object.image).to(left, bottom)
-        object.hitBoxX = [left, left+object.width]
-        object.hitBoxY = [bottom, bottom+object.height]
+        updateHitBox(object, left, bottom)
     }
 
     return object
 }
 
-const updateCharacterHitBox = (object, left, bottom) => {
-    object.hitBoxX = [left+10, left+object.width-10]
-    object.hitBoxY = [bottom, bottom+object.height-50]
+const updateHitBox = (object, left, bottom) => {
+    object.hitBoxX = [left, left+object.width]
+    object.hitBoxY = [bottom, bottom+object.height]
+}
+
+const updatePickUpBox = (object, left, bottom) => {
+    object.pickUpBoxX = [left+10, left+object.width-10]
+    object.pickUpBoxY = [bottom, bottom+object.height-50]
 }

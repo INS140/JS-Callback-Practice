@@ -26,8 +26,8 @@ function move(element) {
             if (direction === 'east') {if (x < window.innerWidth-50) {x++}}
             if (direction === 'south') {if (y > 102) {y--}}
             updateCoor(x, y)
-            updateCharacterZIndex()
-            updateCharacterHitBox(character, x, y)
+            updateCharacterZIndex(pc)
+            updateCharacterBoxes(pc, x, y)
             pickUpItem()
         }
         
