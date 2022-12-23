@@ -32,6 +32,7 @@ function move(element) {
         }
         
         setInterval(moveCharacter, 1)
+        setInterval(killCollision, 50)
 
         document.addEventListener('keydown', e => {
             if (e.repeat) return;

@@ -58,3 +58,26 @@ const updateCharacterBoxes = (object, left, bottom) => {
     updateHitBox(object, left, bottom)
     updatePickUpBox(object, left, bottom)
 }
+
+const killCollision = () => {
+    if (pc.hitBoxX[0] <= npc.hitBoxX[1] && pc.hitBoxY[0] <= npc.hitBoxY[1]) {
+        if (pc.hitBoxX[1] > npc.hitBoxX[1] && pc.hitBoxY[1] > npc.hitBoxY[1]) {
+            window.alert('GAME OVER')
+        }
+    }
+    if (pc.hitBoxX[1] >= npc.hitBoxX[0] && pc.hitBoxY[1] >= npc.hitBoxY[0]) {
+        if (pc.hitBoxX[0] < npc.hitBoxX[0] && pc.hitBoxY[0] < npc.hitBoxY[0]) {
+            window.alert('GAME OVER')
+        }
+    }
+    if (pc.hitBoxX[1] >= npc.hitBoxX[0] && pc.hitBoxY[0] <= npc.hitBoxY[1]) {
+        if (pc.hitBoxX[0] < npc.hitBoxX[0] && pc.hitBoxY[1] > npc.hitBoxY[1]) {
+            window.alert('GAME OVER')
+        }
+    }
+    if (pc.hitBoxX[0] <= npc.hitBoxX[1] && pc.hitBoxY[1] >= npc.hitBoxY[0]) {
+        if (pc.hitBoxX[1] > npc.hitBoxX[1] && pc.hitBoxY[0] < npc.hitBoxY[0]) {
+            window.alert('GAME OVER')
+        }
+    }
+}
